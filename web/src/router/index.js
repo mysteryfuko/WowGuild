@@ -1,8 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import pcPage from '../pc/page.vue'
 import point from '../pc/Point.vue'
+import pointChange from '../pc/PointChange.vue'
+import loot from '../pc/Loot.vue'
 import news from '../pc/News.vue'
 import mobilePage from '../mobile/page.vue'
+import { isMobile, isWeiXin } from '../util/myfun'
 
 const routes = [
   {
@@ -16,9 +19,19 @@ const routes = [
         component: news
       },
       {
-        path: '/point',
+        path: '/point/:id',
         name: 'point',
         component: point
+      },
+      {
+        path: '/loot/:id',
+        name: 'loot',
+        component: loot
+      },
+      {
+        path: '/pointChange/:id',
+        name: 'pointChange',
+        component: pointChange
       }
     ]
   },
@@ -41,26 +54,6 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-
-/**
- * 判断是否是微信环境
- */
-function isWeiXin () {
-  var ua = window.navigator.userAgent.toLowerCase()
-  if (ua.indexOf('micromessenger') > -1) {
-    return true // 是微信端
-  } else {
-    return false
-  }
-}
-
-function isMobile () {
-  if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-    return true // 手机端
-  } else {
-    return false
-  }
-}
 
 router.beforeEach((to, from, next) => {
   if (to.path.indexOf('/m')) {

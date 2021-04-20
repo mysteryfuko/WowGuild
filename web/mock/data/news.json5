@@ -1,0 +1,7 @@
+{
+  "error":0,
+  "data":{
+    "title":"@ctitle(7)",
+    "content":"@cparagraph(5)"
+  }
+}

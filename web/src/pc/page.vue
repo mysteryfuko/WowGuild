@@ -14,7 +14,9 @@
 <script>
 import navBar from './components/NavBar'
 export default {
-  setup () {},
+  setup () {
+
+  },
 
   components: {
     navBar

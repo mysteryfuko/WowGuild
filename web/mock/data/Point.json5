@@ -1,0 +1,18 @@
+{
+  "error":0,
+  "total|40-100":1,
+  "data|15":[{
+      'name':'@cname()',
+      'job|1':[ 
+        "HUNTER",
+        "WARRIOR",
+        "ROGUE",
+        "MAGE",
+        "PRIEST",
+        "WARLOCK",
+        "DRUID",
+        "PALADIN",
+        "SHAMAN"],
+      'point|1-500':1
+    }]
+}

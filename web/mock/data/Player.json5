@@ -1,0 +1,9 @@
+{
+  "error":0,
+  "total|40-100":1,
+  "data|15":[{
+      'date':'@date()',
+      'event':'@ctitle(10)',
+      'point|1-500':1
+    }]
+}

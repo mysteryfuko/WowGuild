@@ -1,0 +1,23 @@
+{
+  "error":0,
+  "total|40-100":1,
+  "data|15":[{
+    "event|1": ['MC','bwl'],
+    "point|1-10": 1,
+    "poepleNum|1-20": 10,
+    "date": '@date()',
+    "name|1-25": [{
+      'name':'@cname()',
+      'job|1':[ 
+        "HUNTER",
+        "WARRIOR",
+        "ROGUE",
+        "MAGE",
+        "PRIEST",
+        "WARLOCK",
+        "DRUID",
+        "PALADIN",
+        "SHAMAN"]
+    }]
+  }]
+}
