@@ -1,12 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-19 14:04:29
- * @LastEditTime: 2021-04-21 05:50:12
+ * @LastEditTime: 2021-04-21 15:22:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \web\src\pc\Point.vue
 -->
 <template>
+
   <el-input v-model="search"
             size="mini"
             placeholder="输入变动原因或日期关键字搜索"

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-19 15:09:06
- * @LastEditTime: 2021-04-21 06:02:14
+ * @LastEditTime: 2021-04-21 15:23:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \web\src\pc\News.vue
@@ -14,12 +14,14 @@
             :closable="false"
             show-icon>
   </el-alert>
-
+<div id="myChart"
+     :style="{ width: '300px', height: '300px' }"></div>
   <el-collapse v-model="state.activeNames" accordion >
     <el-collapse-item  :name="index+1+''" v-for="(item,index) in state.activity" :key="index">
       <template #title>
       <div style="color:red">{{item.date}}</div>
     </template>
+
       <div>{{item.content}}</div>
     </el-collapse-item>
   </el-collapse>
@@ -50,6 +52,27 @@ export default {
     return {
       state
     }
+  },
+  mounted () {
+    const myChart = this.$root.echarts.init(
+      document.getElementById('myChart')
+    )
+    // 绘制图表
+    myChart.setOption({
+      title: { text: '总用户量' },
+      tooltip: {},
+      xAxis: {
+        data: ['12-3', '12-4', '12-5', '12-6', '12-7', '12-8']
+      },
+      yAxis: {},
+      series: [
+        {
+          name: '用户量',
+          type: 'line',
+          data: [5, 20, 36, 10, 10, 20]
+        }
+      ]
+    })
   }
 }
 </script>

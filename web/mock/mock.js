@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-20 19:56:10
- * @LastEditTime: 2021-04-21 05:33:07
+ * @LastEditTime: 2021-05-03 14:13:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \web\mock\mock.js
@@ -20,7 +20,7 @@ function getJsonFile (filePath) {
 
 // 返回一个函数
 module.exports = function (app) {
-  if (process.env.MOCK == 'true') {
+  if (process.env.MOCK === 'true') {
     // 监听http请求
     app.get('/api/gettitle', function (rep, res) {
       // 每次响应请求时读取mock data的json文件
@@ -42,7 +42,9 @@ module.exports = function (app) {
 
     app.get(RegExp('/api/getpointchange' + '.*'), function (rep, res) {
       var json = getJsonFile('./data/PointChange.json5')
-      res.json(Mock.mock(json))
+      setTimeout(() => {
+        res.json(Mock.mock(json))
+      }, 2000)
     })
 
     app.get(RegExp('/api/getpoint' + '.*'), function (rep, res) {

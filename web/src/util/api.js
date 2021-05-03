@@ -1,12 +1,38 @@
 /*
  * @Author: your name
  * @Date: 2021-04-20 19:31:29
- * @LastEditTime: 2021-04-21 05:51:31
+ * @LastEditTime: 2021-05-03 13:59:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \web\src\util\api.js
  */
 import axios from 'axios'
+import { ElLoading } from 'element-plus'
+
+let loadingInstance
+
+function startLoading () {
+  loadingInstance = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    spinner: 'el-icon-loading',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+}
+
+function endLoading () {
+  loadingInstance.close()
+}
+
+axios.interceptors.request.use(config => {
+  startLoading()
+  return config
+})
+// 响应数据拦截器
+axios.interceptors.response.use(response => {
+  endLoading()
+  return response
+})
 
 export async function getTitle () {
   var data = ''
