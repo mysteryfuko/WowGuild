@@ -1,3 +1,7 @@
+/*
+ * @Author: MysteryFuko
+ * @LastEditors: MysteryFuko
+ */
 const module = {
   namespaced: true,
   state: {

@@ -1,5 +1,13 @@
+<!--
+ * @Author: MysteryFuko
+ * @Date: 2021-04-19 17:10:46
+ * @LastEditTime: 2021-05-04 16:31:58
+ * @LastEditors: MysteryFuko
+ * @Description: In User Settings Edit
+ * @FilePath: \web\src\pc\components\NavBar.vue
+-->
 <template>
-  <el-menu :default-active="activeIndex"
+  <el-menu :default-active="state.activeIndex"
            class="navbar"
            mode="horizontal">
     <el-menu-item index="1">
@@ -25,46 +33,39 @@
 
 <script>
 import { getTitle } from '@/util/api'
-import { mapState, mapMutations } from 'vuex'
-
+import { useStore } from 'vuex'
+import { onMounted, reactive } from 'vue'
+import { useRoute } from 'vue-router'
 export default {
-  data () {
-    return {
+  setup () {
+    const state = reactive({
       activeIndex: '1',
       navConfig: {
         point: '1',
         pointChange: '2',
         loot: '3'
       }
-    }
-  },
-  setup () {
+    })
+    const route = useRoute()
+    const store = useStore()
 
-  },
-  computed: {
-    ...mapState('TitleModule', ['titleList'])
-  },
-  created () {
-    // 高亮当前页面所述标签
-    if (this.$route.params.id !== undefined) {
-      this.activeIndex = this.$route.params.id + '-' + this.navConfig[this.$route.name]
+    onMounted(() => {
+      if (store.state.TitleModule.titleList !== '') {
+        getTitle().then((res) => {
+          store.commit('TitleModule/setTitleList', res.data.title)
+        })
+      }
+
+      if (route.params.id !== undefined) {
+        state.activeIndex = route.params.id + '-' + state.navConfig[route.name]
+      }
+    })
+    return {
+      state
     }
-  },
-  mounted () {
-    // 初始化导航栏数据
-    if (this.titleList !== '') {
-      getTitle().then((res) => {
-        this.setTitleList(res.data.title)
-      })
-    }
-  },
-  methods: {
-    ...mapMutations('TitleModule', ['setTitleList'])
   }
 }
 </script>
 
 <style>
-.navbar {
-}
 </style>
