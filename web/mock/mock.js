@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-04-20 19:56:10
- * @LastEditTime: 2021-05-03 14:13:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-04 16:38:44
+ * @LastEditors: MysteryFuko
  * @Description: In User Settings Edit
  * @FilePath: \web\mock\mock.js
  */
@@ -42,9 +42,9 @@ module.exports = function (app) {
 
     app.get(RegExp('/api/getpointchange' + '.*'), function (rep, res) {
       var json = getJsonFile('./data/PointChange.json5')
-      setTimeout(() => {
-        res.json(Mock.mock(json))
-      }, 2000)
+      // setTimeout(() => {
+      res.json(Mock.mock(json))
+      // }, 2000)
     })
 
     app.get(RegExp('/api/getpoint' + '.*'), function (rep, res) {

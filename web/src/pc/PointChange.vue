@@ -1,13 +1,13 @@
 <template>
 
-  <el-input v-model="search"
+  <el-input v-model="state.search"
             size="mini"
             placeholder="输入变动原因或日期关键字搜索"
             style="line-height: 24px;float:right;width:200px " />
-  <el-table :data="tableData.filter(data => !search || data.date.toLowerCase().includes(search.toLowerCase()) ||data.event.toLowerCase().includes(search.toLowerCase())  )"
+  <el-table :data="state.tableData.filter(data => !state.search || data.date.toLowerCase().includes(state.search.toLowerCase()) ||data.event.toLowerCase().includes(state.search.toLowerCase())  )"
             style="width: 100%"
-            :row-key="getRowKeys"
-                :expand-row-keys="expands"
+            :row-key="state.getRowKeys"
+                :expand-row-keys="state.expands"
                 @current-change="toggleRowExpansion"
                 @expand-change = "toggleRowExpansion"
             >
@@ -26,7 +26,7 @@
                    :key="item"
                    :class="item.job"
                    class="job"
-                   @click="handleNameClick(item.name,item.job)">{{ item.name }}</div>
+                   @click="handleNameClick(item,'true')">{{ item.name }}</div>
             </span>
           </el-form-item>
         </el-form>
@@ -47,115 +47,79 @@
   </el-table>
   <el-pagination background
                  layout="prev, pager, next"
-                 :total="totalNum"
+                 :total="state.totalNum"
                  :page-size="20"
                  @current-change="handleCurrentChange">
   </el-pagination>
-
-  <el-drawer title="我是标题"
-             v-model="nameDrawer"
-             size="60%">
-    <el-table               :data="playerTableData"
-              border>
-      <el-table-column prop="date"
-                       label="时间"
-                       width="280">
-      </el-table-column>
-      <el-table-column prop="point"
-                       label="变动值"
-                       width="280">
-      </el-table-column>
-      <el-table-column prop="event"
-                       label="变动原因">
-      </el-table-column>
-    </el-table>
-    <el-pagination background
-                 layout="prev, pager, next"
-                 :total="titleNum"
-                 :page-size="20"
-                 @current-change="handlePlayerCurrentChange">
-  </el-pagination>
-  <template #title>
-      <div :class="titleNameJob">
-        {{namedata}}
-      </div>
-    </template>
-  </el-drawer>
-
-  <el-drawer title="我是标题"
-             v-model="combatDrawer"
-             size="70%">
-    <span>战斗信息</span>
-  </el-drawer>
+  <combat-detail ref="CombatRef"></combat-detail>
+  <player-point-detail ref="playerRef"></player-point-detail>
 
 </template>
 
 <script scoped>
-import { getPointChange, getPlayer } from '@/util/api'
+import { getPointChange } from '@/util/api'
 import '@/assets/job.css'
+import CombatDetail from './components/CombatDetail'
+import PlayerPointDetail from './components/PlayerPointDetail'
+import { onMounted, reactive, ref } from 'vue'
+import { useRoute } from 'vue-router'
 export default {
-  data () {
-    return {
-      tableData: [],
-      playerTableData: [],
-      nameDrawer: false,
-      combatDrawer: false,
-      namedata: '',
+  components: {
+    CombatDetail,
+    PlayerPointDetail
+  },
+  setup () {
+    const state = reactive({
       search: '',
-      totalNum: 0,
-      titleNameJob: '',
-      titleNum: 0,
-      // 获取row的key值
+      tableData: [],
       getRowKeys (row) {
         return row.id
       },
-      // 要展开的行，数值的元素是row的key值
-      expands: []
-    }
-  },
-
-  mounted () {
-    getPointChange(this.$route.params.id).then((res) => {
-      this.tableData = res.data
-      this.totalNum = res.total
+      expands: [],
+      totalNum: 0
     })
-  },
-  methods: {
-    toggleRowExpansion (row) {
-      this.expands = []
-      this.expands.push(row.id)
-    },
-    handleNameClick (name, job) {
-      this.nameDrawer = true
-      this.namedata = name
-      this.titleNameJob = job
-      getPlayer(this.namedata, this.$route.params.id).then(res => {
-        this.playerTableData = res.data
-        this.titleNum = res.total
+
+    const CombatRef = ref()
+    const playerRef = ref()
+    const route = useRoute()
+
+    const toggleRowExpansion = (row) => {
+      state.expands = []
+      state.expands.push(row.id)
+    }
+
+    const handleCurrentChange = (page) => {
+      getPointChange(route.params.id, page).then((res) => {
+        state.tableData = res.data
       })
-    },
-    handleCombatClick () {
-      this.combatDrawer = true
-    },
-    /**
-     * @description:分页函数
-     * @param page number- 页码
-     *
-     * */
-    handleCurrentChange (page) {
-      getPointChange(this.$route.params.id, page).then((res) => {
-        this.tableData = res.data
+    }
+
+    const handleCombatClick = () => {
+      CombatRef.value.getCombatData()
+    }
+
+    const handleNameClick = (val, draw) => {
+      playerRef.value.getTableData(val, draw)
+    }
+    onMounted(() => {
+      getPointChange(route.params.id).then((res) => {
+        state.tableData = res.data
+        state.totalNum = res.total
       })
-    },
-    handlePlayerCurrentChange (page) {
-      getPlayer(this.titleName, this.$route.params.id, page).then(res => {
-        this.playerTableData = res.data
-      })
+    })
+    return {
+      state,
+      toggleRowExpansion,
+      handleCurrentChange,
+      handleCombatClick,
+      CombatRef,
+      playerRef,
+      handleNameClick
     }
   }
 }
 </script>
-<style>
+<style scoped>
 .job {
   float: left;
   padding: 10px;

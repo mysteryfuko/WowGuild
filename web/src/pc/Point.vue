@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-19 14:04:29
- * @LastEditTime: 2021-05-04 16:37:10
+ * @LastEditTime: 2021-05-05 17:12:49
  * @LastEditors: MysteryFuko
  * @Description: In User Settings Edit
  * @FilePath: \web\src\pc\Point.vue
@@ -15,7 +15,7 @@
   <el-table :cell-class-name="handleRowClass"
             :data="state.tableData.filter(data => !state.search || data.name.toLowerCase().includes(state.search.toLowerCase()) )"
             border
-            @current-change="handleClick">
+            @row-click="handleClick">
     <el-table-column prop="name"
                      label="姓名"
                      width="280">

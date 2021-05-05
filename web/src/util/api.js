@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-04-20 19:31:29
- * @LastEditTime: 2021-05-03 13:59:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-05 17:19:59
+ * @LastEditors: MysteryFuko
  * @Description: In User Settings Edit
  * @FilePath: \web\src\util\api.js
  */
@@ -76,7 +76,7 @@ export async function getPoint (id, page = 1) {
 
 export async function getPlayer (name, id, page = 1) {
   var data = ''
-  await axios.get(`/api/getplayer/?name=${name}&id=${id}&page=${page}`).then(res => {
+  await axios.get(`/api/getplayer/?name=${name}&belong=${id}&page=${page}`).then(res => {
     data = res.data
   })
   return data

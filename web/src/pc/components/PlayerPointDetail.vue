@@ -2,15 +2,18 @@
  * @Author: MysteryFuko
  * @Date: 2021-05-04 15:41:48
  * @LastEditors: MysteryFuko
- * @LastEditTime: 2021-05-04 16:28:04
+ * @LastEditTime: 2021-05-05 17:18:59
  * @Description: file content
  * @FilePath: \web\src\pc\components\PlayerPointDetail.vue
 -->
 <template>
   <el-drawer v-model="state.Drawer"
              size="60%">
+             <el-tabs v-model="state.activeName" @tab-click="handleClick">
+  <el-tab-pane label="分数变化" name="pointTab">
     <el-table :data="state.playerTableData"
-              border>
+              border
+              >
       <el-table-column prop="date"
                        label="时间"
                        width="280">
@@ -29,11 +32,15 @@
                    :page-size="20"
                    @current-change="handlePlayerCurrentChange">
     </el-pagination>
-    <template #title>
+    </el-tab-pane>
+    <el-tab-pane label="战斗详情" name="combatDetail" v-if="state.CombatShow"></el-tab-pane>
+  </el-tabs>
+
+  <template #title>
       <div :class="state.titleNameJob">
         {{state.titleName}}
       </div>
-    </template>
+  </template>
   </el-drawer>
 </template>
 
@@ -48,10 +55,16 @@ export default {
       playerTableData: [],
       titleNum: 0,
       titleName: '',
-      titleNameJob: ''
+      titleNameJob: '',
+      activeName: 'pointTab',
+      CombatShow: false
     })
     const route = useRoute()
-    const getTableData = (val) => {
+    const handleClick = (tab, event) => {
+      console.log(tab, event)
+    }
+    const getTableData = (val, CombatShow = false) => {
+      state.CombatShow = CombatShow
       state.Drawer = true
       state.titleName = val.name
       state.titleNameJob = val.job
@@ -68,7 +81,8 @@ export default {
     return {
       state,
       getTableData,
-      handlePlayerCurrentChange
+      handlePlayerCurrentChange,
+      handleClick
     }
   }
 }
