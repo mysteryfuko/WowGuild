@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-19 16:00:29
- * @LastEditTime: 2021-05-03 15:10:50
- * @LastEditors: your name
+ * @LastEditTime: 2021-05-06 16:17:50
+ * @LastEditors: MysteryFuko
  * @Description: In User Settings Edit
  * @FilePath: \web\src\pc\page.vue
 -->
@@ -21,9 +21,15 @@
 
 <script>
 import navBar from './components/NavBar'
+import * as echarts from 'echarts/core'
+import { BarChart } from 'echarts/charts'
+import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+import { provide } from 'vue'
 export default {
   setup () {
-
+    echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer])
+    provide('echarts', echarts)
   },
 
   components: {
